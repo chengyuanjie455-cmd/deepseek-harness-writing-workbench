@@ -61,7 +61,9 @@
 | <code>pnpm check:consumer-types</code> | 通过 | 插件声明面检查通过；上游依赖的严格声明噪声按脚本设计隔离 |
 | <code>pnpm pack</code> | 通过 | 生成 164 项文件的 npm 包，SHA256：<code>a78bc2f611a5e7b1b8de3fee349c7a80aed0321f1bbefe8c20df9e3f25b3345f</code> |
 | 真实 DSH profile 安装、bundle 注册与服务启动 | 通过 | 在临时 <code>DSH_HOME</code> 中完成，未触碰用户现有 profile；<code>dsh web</code> 成功监听随机本地端口 |
-| Playwright 无头渲染 | 待 CI | 本机缺少对应 Chromium 运行件，下载长时间无输出后主动停止；不是插件安装或服务启动失败 |
+| Playwright 无头渲染 | GitHub CI 通过 | 本机缺少对应 Chromium 运行件，下载长时间无输出后主动停止；GitHub Actions 的 <code>plugin-mount</code> 已完成真实 DSH 挂载与无头渲染 |
+
+GitHub Actions 首轮发布验证：<https://github.com/chengyuanjie455-cmd/deepseek-harness-writing-workbench/actions/runs/31875558028>。其中 <code>ci</code> 与 <code>plugin-mount</code> 两个作业均为 <code>success</code>。
 
 ## 验证边界
 
