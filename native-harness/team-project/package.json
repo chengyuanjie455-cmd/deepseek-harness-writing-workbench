@@ -1,0 +1,1 @@
+{"name":"team-project-integration","version":"1.0.0","type":"module","main":"./index.mjs","exports":{".":"./index.mjs","./client":"./client.js","./package.json":"./package.json"},"dsh":{"client":{"inject":["@deepseek-ai/dsh-client-ui-tool"],"external":["react"],"platform":"web"}}}

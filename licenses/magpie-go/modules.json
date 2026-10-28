@@ -1,0 +1,161 @@
+[
+  {
+    "module": "github.com/Calcium-Ion/moejs",
+    "version": "v0.1.0-alpha.4",
+    "files": [
+      "licenses/magpie-go/github.com__Calcium-Ion__moejs/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/dustin/go-humanize",
+    "version": "v1.0.1",
+    "files": [
+      "licenses/magpie-go/github.com__dustin__go-humanize/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/google/uuid",
+    "version": "v1.6.0",
+    "files": [
+      "licenses/magpie-go/github.com__google__uuid/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/klauspost/compress",
+    "version": "v1.18.3",
+    "files": [
+      "licenses/magpie-go/github.com__klauspost__compress/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/mattn/go-isatty",
+    "version": "v0.0.20",
+    "files": [
+      "licenses/magpie-go/github.com__mattn__go-isatty/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/ncruces/go-strftime",
+    "version": "v1.0.0",
+    "files": [
+      "licenses/magpie-go/github.com__ncruces__go-strftime/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/pelletier/go-toml/v2",
+    "version": "v2.2.4",
+    "files": [
+      "licenses/magpie-go/github.com__pelletier__go-toml__v2/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/remyoudompheng/bigfft",
+    "version": "v0.0.0-20230129092748-24d4a6f8daec",
+    "files": [
+      "licenses/magpie-go/github.com__remyoudompheng__bigfft/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/tidwall/gjson",
+    "version": "v1.19.0",
+    "files": [
+      "licenses/magpie-go/github.com__tidwall__gjson/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/tidwall/jsonc",
+    "version": "v0.3.3",
+    "files": [
+      "licenses/magpie-go/github.com__tidwall__jsonc/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/tidwall/match",
+    "version": "v1.1.1",
+    "files": [
+      "licenses/magpie-go/github.com__tidwall__match/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/tidwall/pretty",
+    "version": "v1.2.0",
+    "files": [
+      "licenses/magpie-go/github.com__tidwall__pretty/LICENSE"
+    ]
+  },
+  {
+    "module": "github.com/yetone/magpie",
+    "version": "",
+    "files": [
+      "licenses/magpie-go/github.com__yetone__magpie/LICENSE"
+    ]
+  },
+  {
+    "module": "golang.org/x/exp",
+    "version": "v0.0.0-20260410095643-746e56fc9e2f",
+    "files": [
+      "licenses/magpie-go/golang.org__x__exp/LICENSE"
+    ]
+  },
+  {
+    "module": "golang.org/x/net",
+    "version": "v0.56.0",
+    "files": [
+      "licenses/magpie-go/golang.org__x__net/LICENSE"
+    ]
+  },
+  {
+    "module": "golang.org/x/sys",
+    "version": "v0.46.0",
+    "files": [
+      "licenses/magpie-go/golang.org__x__sys/LICENSE"
+    ]
+  },
+  {
+    "module": "golang.org/x/text",
+    "version": "v0.39.0",
+    "files": [
+      "licenses/magpie-go/golang.org__x__text/LICENSE"
+    ]
+  },
+  {
+    "module": "gopkg.in/yaml.v3",
+    "version": "v3.0.1",
+    "files": [
+      "licenses/magpie-go/gopkg.in__yaml.v3/LICENSE",
+      "licenses/magpie-go/gopkg.in__yaml.v3/NOTICE"
+    ]
+  },
+  {
+    "module": "modernc.org/libc",
+    "version": "v1.67.6",
+    "files": [
+      "licenses/magpie-go/modernc.org__libc/LICENSE",
+      "licenses/magpie-go/modernc.org__libc/LICENSE-3RD-PARTY.md"
+    ]
+  },
+  {
+    "module": "modernc.org/mathutil",
+    "version": "v1.7.1",
+    "files": [
+      "licenses/magpie-go/modernc.org__mathutil/LICENSE"
+    ]
+  },
+  {
+    "module": "modernc.org/memory",
+    "version": "v1.11.0",
+    "files": [
+      "licenses/magpie-go/modernc.org__memory/LICENSE",
+      "licenses/magpie-go/modernc.org__memory/LICENSE-MMAP-GO",
+      "licenses/magpie-go/modernc.org__memory/LICENSE-LOGO",
+      "licenses/magpie-go/modernc.org__memory/LICENSE-GO"
+    ]
+  },
+  {
+    "module": "modernc.org/sqlite",
+    "version": "v1.44.3",
+    "files": [
+      "licenses/magpie-go/modernc.org__sqlite/LICENSE"
+    ]
+  }
+]

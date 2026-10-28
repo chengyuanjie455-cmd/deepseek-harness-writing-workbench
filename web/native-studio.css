@@ -1,0 +1,324 @@
+/* Only the chat's existing control row and native overlays; project columns
+   and the five creation categories keep ProjectStudio's original styles. */
+.studio-native-tools{display:flex;align-items:center;gap:6px;flex:none}
+.studio-native-tools>details,.studio-native-chat-actions{position:relative}
+.studio-native-tools summary,.studio-native-tools-trigger,.studio-native-chat-actions>summary,.studio-native-chat-actions>button{cursor:pointer;font-size:12px;padding:5px 8px;list-style:none;border:1px solid var(--team-line);border-radius:6px;background:transparent;color:inherit}
+.studio-native-tools-menu{position:absolute;right:0;top:calc(100% + 6px);min-width:180px;max-width:min(280px,80vw);z-index:60;padding:6px;background:var(--studio-surface,#202023);border:1px solid var(--studio-line,#333338);border-radius:9px;box-shadow:0 8px 24px #0004}
+.studio-native-tools-menu>button{display:block;width:100%;text-align:left;border:0;margin:2px 0}.studio-native-tools-menu[data-floating="true"]{position:fixed;inset:auto;width:auto;max-width:min(280px,calc(100vw - 16px));overflow:auto;overscroll-behavior:contain;z-index:1000;padding-bottom:max(6px,env(safe-area-inset-bottom))}
+.studio-native-panel{width:min(1000px,calc(100vw - 32px));height:min(800px,calc(100dvh - 32px));padding:12px;border:1px solid var(--studio-line,#333338);border-radius:12px;background:var(--studio-bg,#171719);color:var(--studio-text,#f0eff2);overflow:auto}
+.studio-native-panel[open]{display:flex;flex-direction:column;gap:10px}
+.studio-native-panel::backdrop{background:#0008}
+.studio-native-panel-close{align-self:flex-start;flex:none;border:1px solid var(--studio-line,#333338);border-radius:6px;padding:6px 10px;font:inherit;font-size:12px;background:transparent;color:inherit;cursor:pointer}
+.studio-native-panel>[data-slot]{min-height:0;flex:1;overflow:auto}
+.native-chat-session{flex-wrap:wrap}
+.native-chat-session select{flex-basis:140px}
+.studio-native-tools [data-slot="sidebar.settings"]{min-width:30px}
+
+.team-native-studio-root{--team-bg:var(--dsw-alias-bg-base);--team-panel:var(--dsw-alias-bg-base);--team-ink:var(--dsw-alias-label-primary);--team-muted:var(--dsw-alias-label-secondary);--team-line:var(--dsw-alias-border-l2);--team-outline:var(--dsw-alias-border-l1);--team-soft:var(--dsw-alias-interactive-bg-hover);--team-tint:var(--dsw-alias-interactive-bg-active);--team-accent:var(--dsw-alias-state-business-primary);height:100dvh;min-width:0}
+.native-chat-surface,.native-chat-content{display:flex;flex:1;flex-direction:column;min-height:0;min-width:0;height:100%;overflow:hidden}.native-chat-session{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--team-line);flex:none}.native-chat-session select{flex:1;min-width:0;background:transparent;color:var(--team-ink);font:inherit;font-size:12px;border:0}.native-chat-session button{background:transparent;color:var(--team-ink);font-size:12px;padding:5px 8px;border:1px solid var(--team-line);border-radius:6px}.native-chat-content>div{min-height:0;flex:1}
+
+/* Claudian-style docking: one header, native tools and settings in the same
+   right sidebar. No second chat controller, copied plugin or third shell. */
+.team-native-studio-root .project-studio[data-agent-docked=true]{grid-template-columns:190px minmax(0,1fr) minmax(320px,var(--studio-agent-width,34vw))}
+.team-native-studio-root{--studio-bg:var(--team-bg);--studio-surface:var(--dsw-alias-bg-layer-1,var(--team-bg));--studio-line:var(--team-line);--studio-muted:var(--team-muted);--studio-text:var(--team-ink);--ink:var(--team-ink);--muted:var(--team-muted);--border:var(--team-line)}
+.team-native-studio-root .studio-navigator,.team-native-studio-root .studio-browser{background:var(--team-bg);color:var(--team-ink)}
+.team-native-studio-root .studio-content-card,.team-native-studio-root .studio-card-preview,.team-native-studio-root .studio-search,.team-native-studio-root .studio-content-toolbar select,.team-native-studio-root .studio-document{background:var(--studio-surface);color:var(--team-ink);border-color:var(--team-line)}
+.team-native-studio-root .studio-navigator button,.team-native-studio-root .studio-content-copy>strong,.team-native-studio-root .studio-search input{color:var(--team-ink)}
+.team-native-studio-root .studio-navigator button[aria-pressed=true],.team-native-studio-root .studio-asset-types>button[aria-pressed=true]{background:var(--team-tint);color:var(--team-ink)}
+.team-native-studio-root .studio-navigator button:hover,.team-native-studio-root .studio-card-actions button:hover{background:var(--team-soft)}
+.team-native-studio-root .studio-sidebar-caption,.team-native-studio-root .studio-content-copy>small,.team-native-studio-root .studio-result-count,.team-native-studio-root .studio-eyebrow,.team-native-studio-root .studio-episode-nav>button>small{color:var(--team-muted)}
+.team-native-studio-root .studio-episode-nav,.team-native-studio-root .studio-navigator>footer{border-color:var(--team-line)}
+.team-native-studio-root .team-workspace-header[data-layout=sidebar]{color:var(--team-ink)}
+.team-native-studio-root .studio-navigator{padding-top:14px}
+.team-native-studio-root .studio-agent{position:relative;overflow:visible;min-width:0;background:var(--team-bg)}
+.team-native-studio-root .studio-agent>header{padding:10px;gap:5px;min-height:52px;height:auto;flex:none;border-bottom:1px solid var(--team-line)}
+.native-sidebar-heading{display:flex;gap:5px;align-items:center;min-width:0;flex:1}
+.native-sidebar-session-name{display:flex;flex:1;flex-direction:column;gap:4px;min-width:45px}
+.native-sidebar-session-name strong{font-size:12px;font-weight:550;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--team-ink)}
+.native-sidebar-session-name span{font-size:10px;color:var(--team-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.native-sidebar-heading button,.studio-native-tools summary,.studio-native-tools-trigger,.studio-native-chat-actions>summary,.studio-native-chat-actions>button{font:inherit;font-size:11px;color:var(--team-ink);border:1px solid transparent;background:transparent;border-radius:6px;padding:5px 6px;cursor:pointer;white-space:nowrap}
+.native-sidebar-heading button:hover,.studio-native-tools summary:hover,.studio-native-tools-trigger:hover,.studio-native-chat-actions>summary:hover,.studio-native-chat-actions>button:hover{background:var(--team-soft)}
+.native-sidebar-heading button:focus-visible,.studio-native-tools summary:focus-visible,.studio-native-tools-trigger:focus-visible,.studio-native-chat-actions>summary:focus-visible,.studio-native-chat-actions>button:focus-visible{outline:2px solid var(--team-accent);outline-offset:2px}
+.native-sidebar-heading .studio-sidebar-new{font-size:19px;padding:2px 5px}
+.native-sidebar-heading .studio-native-tools{gap:2px}
+.team-native-studio-root .studio-expand-agent{padding:5px;background:transparent;border-color:transparent}
+.team-native-studio-root .studio-expand-agent>span{display:none}
+.native-sidebar-layers,.native-sidebar-chat{position:relative;display:flex;flex:1;flex-direction:column;min-width:0;min-height:0;height:100%;overflow:hidden}
+.native-sidebar-toolbar{display:flex;align-items:center;gap:4px;flex:none;min-height:36px;padding:4px 8px;overflow-x:auto;overflow-y:hidden;border-bottom:1px solid var(--team-line);background:var(--team-bg);color:var(--team-ink)}
+.native-sidebar-toolbar>*{min-width:0}
+.native-sidebar-toolbar .studio-native-tools{flex:1;min-width:max-content}
+.native-sidebar-toolbar .studio-native-tools-menu{max-height:min(60dvh,520px);overflow:auto}
+.native-sidebar-toolbar .studio-native-chat-actions{margin-left:auto;flex:none}
+.native-sidebar-chat[hidden]{display:none}
+.native-sidebar-feature{display:flex;flex:1;min-width:0;min-height:0;flex-direction:column;color:var(--team-ink);background:var(--team-bg)}
+.native-sidebar-feature>header{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--team-line);flex:none}
+.native-sidebar-feature>header button{background:transparent;color:var(--team-muted);border:0;cursor:pointer;font-size:11px}
+.native-sidebar-feature>header strong{font-size:11px;font-weight:500}
+.native-sidebar-feature-content{display:flex;flex-direction:column;flex:1;overflow:auto;min-width:0;min-height:0}
+.native-sidebar-feature-content>[data-slot]{display:flex;flex:1;min-width:0;min-height:0}
+.native-sidebar-feature-content iframe{width:100%;max-width:100%;min-width:0}
+.native-sidebar-settings-host:empty{display:none}
+.native-sidebar-settings-host{position:absolute;inset:0;z-index:100;min-width:0;background:var(--team-bg)}
+.native-sidebar-settings-host>[role=presentation]{position:absolute;inset:0;display:flex;padding:0}
+.native-sidebar-settings-host>[role=presentation]>[aria-hidden=true]{display:none}
+.team-native-studio-root .native-sidebar-settings-host [role=dialog][aria-modal=true]{display:flex;flex-direction:column;position:relative;width:100%;max-width:100%;height:100%;max-height:100%;border-radius:0;box-shadow:none;border:0;background:var(--team-bg)}
+.team-native-studio-root .native-sidebar-settings-host [role=dialog]>nav{width:100%;padding:12px 10px 8px;gap:8px;flex:none;border-bottom:1px solid var(--team-line)}
+.team-native-studio-root .native-sidebar-settings-host [role=dialog]>nav>div:last-child{flex-direction:row;flex-wrap:wrap;gap:3px;max-height:120px;overflow:auto}
+.team-native-studio-root .native-sidebar-settings-host [role=dialog]>nav button{height:auto;padding:6px 8px;font-size:11px}
+.team-native-studio-root .native-sidebar-settings-host [role=dialog]>div{flex:1;min-height:0;min-width:0;overflow:hidden}
+.team-native-studio-root .native-sidebar-settings-host [role=dialog] [data-slot="settings.section"]{min-width:0}
+.team-native-studio-root .native-sidebar-settings-host [role=dialog] iframe[data-team-settings]{width:100%;min-width:0;height:100%}
+.studio-agent-resizer{position:absolute;left:-3px;top:0;bottom:0;width:6px;z-index:55;cursor:col-resize;touch-action:none;border:0;background:transparent}
+.studio-agent-resizer:hover,.studio-agent-resizer:focus-visible{background:var(--team-accent);outline:0;opacity:.7}
+@media(max-width:1150px) and (min-width:761px){.team-native-studio-root .project-studio[data-agent-docked=true]{grid-template-columns:168px minmax(0,1fr) minmax(320px,var(--studio-agent-width,350px))}}
+@media(max-width:760px){.team-native-studio-root .project-studio[data-agent-docked=true]{display:flex}.team-native-studio-root .studio-agent-resizer{display:none}.team-native-studio-root .studio-navigator>.team-workspace-header[data-layout=sidebar]{display:grid;margin:10px 12px 0;padding-bottom:10px}.team-native-studio-root .studio-agent>header{padding:8px}.native-sidebar-session-name span{max-width:160px}}
+@media(min-width:761px){.team-native-studio-root .project-studio[data-agent-expanded=true]{grid-template-columns:minmax(0,1fr)}.team-native-studio-root .project-studio[data-agent-expanded=true] .studio-agent-resizer{display:none}}
+
+/* Compact native chat chrome: keep the conversation and composer visually
+   primary while leaving skill/model truth visible in the chat itself. */
+.team-native-studio-root .studio-agent>header{padding:6px 10px;min-height:40px;background:var(--team-bg);border-bottom-color:color-mix(in srgb,var(--team-line) 70%,transparent)}
+.team-native-studio-root .studio-agent>header{box-sizing:border-box;height:40px}
+.team-native-studio-root .studio-agent>header{gap:5px;overflow:hidden}
+.team-native-studio-root .studio-agent-topline{display:flex;flex-direction:row!important;align-items:center;gap:5px;flex:1;min-width:0;overflow:hidden}
+.team-native-studio-root .studio-agent-topline-heading{display:flex;align-items:center;flex:0 1 43%;min-width:118px;max-width:43%;overflow:hidden}
+.team-native-studio-root .studio-agent-topline-heading>.native-sidebar-heading{flex:1;min-width:0;max-width:100%}
+.team-native-studio-root .studio-agent-topline-controls{display:flex;align-items:center;gap:2px;flex:none;min-width:0}
+.team-native-studio-root .studio-agent-topline-controls .studio-native-chat-actions>button{padding:4px 5px;font-size:10px}
+.team-native-studio-root .studio-chat-context-inline{display:flex;align-items:center;gap:5px;flex:1 1 0;min-width:0;width:auto;height:28px;min-height:28px;padding:0;overflow-x:auto;overflow-y:hidden;border:0;background:transparent}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-context-title{display:none}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-context-chip{padding:3px 5px;font-size:9px}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-context-chip strong{max-width:92px}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-skill-picker{gap:3px;font-size:9px}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-skill-picker select{min-width:82px;max-width:122px;height:23px;padding:2px 17px 2px 5px}
+.team-native-studio-root .studio-chat-context-inline::-webkit-scrollbar{display:none}
+.team-native-studio-root .native-sidebar-heading{height:32px;min-height:32px;overflow:visible;flex-direction:row!important;flex-wrap:nowrap}
+.team-native-studio-root .native-sidebar-heading .studio-native-tools{height:32px;min-height:32px;align-self:center}
+.team-native-studio-root .native-sidebar-heading .VOzbGW_triggerRow,.team-native-studio-root .native-sidebar-heading .VOzbGW_trigger{height:30px;min-height:30px}
+.team-native-studio-root .native-sidebar-session-name{flex-direction:row;align-items:baseline;gap:7px}
+.team-native-studio-root .native-sidebar-session-name strong{font-size:11px;max-width:46%}
+.team-native-studio-root .native-sidebar-session-name span{font-size:9px;flex:1;min-width:0}
+.team-native-studio-root .native-sidebar-heading .studio-sidebar-new{box-sizing:border-box;height:28px;min-height:28px;line-height:22px;padding:0 4px;align-self:center}
+.team-native-studio-root .native-sidebar-toolbar{box-sizing:border-box;height:32px;min-height:32px;padding:2px 6px;background:color-mix(in srgb,var(--team-bg) 92%,var(--team-soft));border-bottom-color:color-mix(in srgb,var(--team-line) 70%,transparent)}
+.team-native-studio-root .studio-native-tools-trigger,.team-native-studio-root .studio-sidebar-history-trigger,.team-native-studio-root .studio-native-chat-actions>button{padding:4px 6px;font-size:10px}
+.studio-chat-context{display:flex;align-items:center;gap:6px;box-sizing:border-box;height:30px;min-height:30px;padding:2px 10px;overflow-x:auto;flex:none;background:color-mix(in srgb,var(--team-bg) 94%,var(--team-tint));border-bottom:1px solid color-mix(in srgb,var(--team-line) 70%,transparent);scrollbar-width:none}
+.studio-chat-context::-webkit-scrollbar{display:none}
+.studio-chat-context-title{flex:none;color:var(--team-muted);font-size:9px;letter-spacing:.3px}
+.studio-chat-context-chip{display:inline-flex;align-items:center;gap:5px;flex:none;min-width:0;padding:3px 7px;border:1px solid color-mix(in srgb,var(--team-line) 85%,transparent);border-radius:999px;background:color-mix(in srgb,var(--team-surface,#fff) 7%,transparent);font-size:10px;line-height:1.3;color:var(--team-muted)}
+.studio-chat-context-chip b{font-weight:500;color:var(--team-muted)}
+.studio-chat-context-chip strong{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--team-ink);font-weight:550}
+.studio-chat-skill-picker{display:inline-flex;align-items:center;gap:5px;flex:none;min-width:0;color:var(--team-muted);font-size:10px;line-height:1.3}
+.studio-chat-skill-picker>span{font-weight:500;white-space:nowrap}
+.studio-chat-skill-picker select{min-width:92px;max-width:180px;height:24px;padding:2px 20px 2px 7px;border:1px solid color-mix(in srgb,var(--team-line) 85%,transparent);border-radius:999px;background:color-mix(in srgb,var(--team-surface,#fff) 7%,transparent);color:var(--team-ink);font:inherit;line-height:1.3;outline:none}
+.studio-chat-skill-picker select:focus{border-color:var(--team-accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--team-accent) 22%,transparent)}
+.studio-chat-skill-picker select:disabled{opacity:.65}
+.studio-chat-skill-picker small{color:var(--team-muted);font-size:9px;white-space:nowrap}
+/* The composer slot is adjacent to the native model picker. When the
+   upstream team-project plugin also mounts its generation skill field, keep
+   one authoritative control visible and retain its image/video controls. */
+.native-chat-surface:has([data-skill-picker-placement="composer"]) .team-generation-choice:has(select[aria-label="选择技能"]){display:none!important}
+.studio-chat-skill-picker[data-skill-picker-placement="composer"]{min-height:28px;padding:2px 6px;border:1px solid color-mix(in srgb,var(--team-line) 85%,transparent);border-radius:8px;background:color-mix(in srgb,var(--team-surface,#fff) 7%,transparent)}
+.studio-chat-skill-picker[data-skill-picker-placement="composer"] select{height:24px;min-width:116px;border:0;background:transparent;padding-left:2px}
+@media(max-width:599px){
+ .team-native-studio-root .uV2eYG_row:not(:has(.uV2eYG_trailingActive)){display:grid!important;grid-template-columns:minmax(0,1fr) 44px!important;gap:4px!important;padding:0!important}
+ .team-native-studio-root .uV2eYG_row:not(:has(.uV2eYG_trailingActive))>.uV2eYG_tools{grid-area:1/1;min-height:44px;min-width:0;gap:6px}
+ .team-native-studio-root .uV2eYG_trailing:not(.uV2eYG_trailingActive){display:contents!important}
+ .team-native-studio-root .uV2eYG_trailing:not(.uV2eYG_trailingActive)>.uV2eYG_standardControls:not([hidden]){grid-area:2/1/3/-1;display:flex!important;flex-wrap:wrap!important;align-items:center;gap:4px!important;width:100%!important;min-width:0!important}
+ .team-native-studio-root .uV2eYG_trailing:not(.uV2eYG_trailingActive)>.uV2eYG_primary{grid-row:1;grid-column:2;width:44px;height:44px;transform:none}
+ .team-native-studio-root .studio-chat-skill-picker[data-skill-picker-placement="composer"]{flex:1 1 145px;min-width:0;max-width:100%}
+ .team-native-studio-root .studio-chat-skill-picker[data-skill-picker-placement="composer"] select{min-width:0;width:100%;max-width:100%}
+ .team-native-studio-root .team-generation-models{flex:1 1 170px!important;min-width:0!important;max-width:100%!important;flex-wrap:wrap!important}
+}
+@media(max-width:760px){.team-native-studio-root .studio-agent>header{box-sizing:border-box;height:36px;padding:3px 8px;min-height:36px}.team-native-studio-root .studio-agent-topline{gap:4px;overflow-x:auto;overflow-y:hidden}.team-native-studio-root .studio-agent-topline-heading{flex:0 0 118px;min-width:118px;max-width:118px}.team-native-studio-root .studio-agent-topline-controls{flex:none}.team-native-studio-root .native-sidebar-heading{height:30px;min-height:30px;flex-direction:row!important}.team-native-studio-root .native-sidebar-heading .studio-native-tools{height:30px;min-height:30px}.team-native-studio-root .native-sidebar-session-name strong{max-width:42%}.team-native-studio-root .studio-chat-context-inline{flex:0 0 205px;height:28px;min-height:28px}.team-native-studio-root .studio-chat-context-inline .studio-chat-context-chip strong{max-width:76px}.studio-mobile-mode{box-sizing:border-box;height:44px}.studio-chat-context{height:30px;min-height:30px;padding:2px 9px}.studio-chat-context-chip{padding:3px 6px}.studio-chat-context-chip strong{max-width:130px}}
+
+/*
+ * Screenwriter workbench visual overhaul.
+ * This block is presentation-only: it intentionally leaves component
+ * structure, data attributes, aria hooks and interaction layout untouched.
+ */
+.team-native-studio-root{
+  --ui-bg:var(--team-bg,#f5f7f6);
+  --ui-panel:var(--team-panel,#fff);
+  --ui-sidebar:var(--team-sidebar,#edf2ef);
+  --ui-soft:var(--team-soft,#eef4f0);
+  --ui-tint:var(--team-tint,#e4efe9);
+  --ui-line:var(--team-line,#dfe7e1);
+  --ui-outline:var(--team-outline,#c7d4ca);
+  --ui-ink:var(--team-ink,#23312a);
+  --ui-muted:var(--team-muted,#6c7d72);
+  --ui-accent:var(--team-accent,#2f6b54);
+  --ui-shadow:0 12px 32px rgba(28,48,38,.08);
+}
+.team-native-studio-root .project-studio{background:var(--ui-bg)!important;color:var(--ui-ink)!important;gap:0}
+.team-native-studio-root .studio-navigator{background:var(--ui-sidebar)!important;border-right:1px solid var(--ui-line)!important;padding:18px 12px 14px!important}
+.team-native-studio-root .studio-project-title{padding:8px 9px 20px!important;color:var(--ui-ink)!important;font-size:13px!important}
+.team-native-studio-root .studio-project-title svg{color:var(--ui-accent)!important;width:18px;height:18px}
+.team-native-studio-root .studio-sidebar-caption{margin:5px 10px 9px!important;color:var(--ui-muted)!important;font-size:10px!important;font-weight:600;letter-spacing:.11em;text-transform:uppercase}
+.team-native-studio-root .studio-navigator nav{gap:3px}
+.team-native-studio-root .studio-navigator nav>button{min-height:40px;padding:9px 10px!important;border-radius:10px!important;color:var(--ui-muted)!important;font-size:12px!important;transition:background .16s ease,color .16s ease,transform .16s ease}
+.team-native-studio-root .studio-navigator nav>button>svg{width:17px;height:17px;color:currentColor}
+.team-native-studio-root .studio-navigator nav>button>small{color:inherit!important;opacity:.72}
+.team-native-studio-root .studio-navigator nav>button:hover{background:var(--ui-soft)!important;color:var(--ui-ink)!important}
+.team-native-studio-root .studio-navigator nav>button[aria-pressed=true]{background:var(--ui-tint)!important;color:var(--ui-accent)!important;box-shadow:inset 3px 0 0 var(--ui-accent)!important;font-weight:600}
+.team-native-studio-root .studio-episode-nav{border-top-color:var(--ui-line)!important;padding-top:16px;margin-top:20px}
+.team-native-studio-root .studio-episode-nav>button{min-height:34px;padding:7px 10px!important;border-radius:8px!important;color:var(--ui-muted)!important;font-size:11px!important}
+.team-native-studio-root .studio-episode-nav>button:hover{background:var(--ui-soft)!important;color:var(--ui-ink)!important}
+.team-native-studio-root .studio-episode-nav>button[aria-pressed=true]{background:var(--ui-tint)!important;color:var(--ui-accent)!important}
+.team-native-studio-root .studio-ep-dot{background:currentColor!important;opacity:.65}
+.team-native-studio-root .studio-navigator>footer{border-top-color:var(--ui-line)!important;padding:12px 6px 0}
+.team-native-studio-root .studio-navigator>footer button{color:var(--ui-muted)!important;border-radius:8px;padding:7px 4px}
+.team-native-studio-root .studio-navigator>footer button:hover{background:var(--ui-soft)!important;color:var(--ui-ink)!important}
+
+.team-native-studio-root .studio-browser{background:var(--ui-bg)!important;color:var(--ui-ink)!important;padding:clamp(18px,2.3vw,32px) clamp(16px,2.6vw,38px) 48px!important}
+.team-native-studio-root .studio-browser-heading{margin-bottom:20px!important;align-items:flex-end}
+.team-native-studio-root .studio-browser-heading h1{color:var(--ui-ink)!important;font-size:clamp(19px,2vw,26px)!important;font-weight:650!important;letter-spacing:-.035em!important;line-height:1.25}
+.team-native-studio-root .studio-browser-heading .studio-eyebrow{margin-bottom:8px!important;color:var(--ui-muted)!important;font-size:10px!important;font-weight:600;letter-spacing:.09em;text-transform:uppercase}
+.team-native-studio-root .studio-icon-button{width:38px;height:38px;padding:0!important;border:1px solid var(--ui-outline)!important;border-radius:10px!important;color:var(--ui-muted)!important;background:var(--ui-panel)!important;transition:background .16s ease,color .16s ease,border-color .16s ease}
+.team-native-studio-root .studio-icon-button:hover{border-color:var(--ui-accent)!important;background:var(--ui-tint)!important;color:var(--ui-accent)!important}
+.team-native-studio-root .studio-content-toolbar{gap:8px!important;align-items:center}
+.team-native-studio-root .studio-search{min-height:40px;padding:0 12px!important;border:1px solid var(--ui-outline)!important;border-radius:10px!important;background:var(--ui-panel)!important;color:var(--ui-muted)!important;box-shadow:0 1px 2px rgba(30,48,38,.03)}
+.team-native-studio-root .studio-search:focus-within{border-color:var(--ui-accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--ui-accent) 14%,transparent)!important}
+.team-native-studio-root .studio-search input{min-height:38px!important;color:var(--ui-ink)!important;font-size:12px!important}
+.team-native-studio-root .studio-search input::placeholder{color:var(--ui-muted)!important;opacity:.8}
+.team-native-studio-root .studio-content-toolbar select{min-height:40px;padding:0 11px!important;border:1px solid var(--ui-outline)!important;border-radius:10px!important;background:var(--ui-panel)!important;color:var(--ui-ink)!important;font-size:11px!important}
+.team-native-studio-root .studio-asset-types{gap:6px!important;padding:16px 0 4px!important}
+.team-native-studio-root .studio-asset-types>button{min-height:32px;padding:6px 11px!important;border:1px solid transparent!important;border-radius:8px!important;color:var(--ui-muted)!important;font-size:11px!important}
+.team-native-studio-root .studio-asset-types>button:hover{background:var(--ui-soft)!important;color:var(--ui-ink)!important}
+.team-native-studio-root .studio-asset-types>button[aria-pressed=true]{border-color:var(--ui-outline)!important;background:var(--ui-tint)!important;color:var(--ui-accent)!important;font-weight:600}
+.team-native-studio-root .studio-result-count{margin:18px 0 13px!important;color:var(--ui-muted)!important;font-size:11px!important}
+.team-native-studio-root .studio-result-count>span{color:var(--ui-muted)!important;opacity:.8}
+.team-native-studio-root .studio-content-grid{gap:14px!important}
+.team-native-studio-root .studio-content-card{border:1px solid var(--ui-line)!important;border-radius:14px!important;background:var(--ui-panel)!important;box-shadow:0 2px 8px rgba(28,48,38,.035);overflow:hidden;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
+.team-native-studio-root .studio-content-card:hover{border-color:var(--ui-outline)!important;box-shadow:var(--ui-shadow);transform:translateY(-2px)}
+.team-native-studio-root .studio-card-preview{height:158px!important;background:var(--ui-soft)!important;color:var(--ui-muted)!important}
+.team-native-studio-root .studio-card-preview.kind-video{height:170px!important;background:#18201d!important}
+.team-native-studio-root .studio-card-preview>img,.team-native-studio-root .studio-card-preview>video{background:var(--ui-soft)!important}
+.team-native-studio-root .studio-card-episode{bottom:10px;left:10px;border:1px solid rgba(255,255,255,.28);border-radius:6px;background:rgba(19,31,25,.76)!important;color:#f5fbf7!important;font-size:10px;padding:4px 7px}
+.team-native-studio-root .studio-play{width:38px;height:38px;border-color:rgba(255,255,255,.7);background:rgba(19,31,25,.72);box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.team-native-studio-root .studio-content-copy{padding:13px 13px 14px!important}
+.team-native-studio-root .studio-content-copy>strong{color:var(--ui-ink)!important;font-size:12px!important;font-weight:600!important;line-height:1.55!important}
+.team-native-studio-root .studio-content-copy>small{margin-top:6px;color:var(--ui-muted)!important;font-size:10px!important}
+.team-native-studio-root .studio-shot-label{color:var(--ui-accent)!important;font-size:10px!important}
+.team-native-studio-root .studio-card-actions{border-top-color:var(--ui-line)!important;margin-top:12px;padding-top:10px}
+.team-native-studio-root .studio-card-actions button,.team-native-studio-root .studio-card-actions a{color:var(--ui-accent)!important;font-size:10px!important}
+.team-native-studio-root .studio-card-actions button:hover,.team-native-studio-root .studio-card-actions a:hover{color:var(--ui-ink)!important}
+.team-native-studio-root .studio-empty{padding:72px 16px!important;color:var(--ui-muted)!important}
+.team-native-studio-root .studio-empty>svg{color:var(--ui-accent)!important;opacity:.55}
+.team-native-studio-root .studio-empty h3{color:var(--ui-ink)!important;font-size:15px!important;font-weight:600}
+.team-native-studio-root .studio-empty p{color:var(--ui-muted)!important;font-size:11px!important}
+.team-native-studio-root .studio-inline-notice{border:1px solid var(--ui-outline)!important;background:var(--ui-soft)!important;color:var(--ui-ink)!important;border-radius:10px!important}
+
+.team-native-studio-root .studio-agent{background:var(--ui-panel)!important;border-left:1px solid var(--ui-line)!important;color:var(--ui-ink)!important}
+.team-native-studio-root .studio-agent>header{background:var(--ui-panel)!important;border-bottom:1px solid var(--ui-line)!important}
+.team-native-studio-root .studio-agent-topline-heading,.team-native-studio-root .native-sidebar-heading{color:var(--ui-ink)!important}
+.team-native-studio-root .native-sidebar-session-name strong{color:var(--ui-ink)!important;font-size:12px!important}
+.team-native-studio-root .native-sidebar-session-name span{color:var(--ui-muted)!important}
+.team-native-studio-root .native-sidebar-heading button,.team-native-studio-root .studio-native-tools summary,.team-native-studio-root .studio-native-tools-trigger,.team-native-studio-root .studio-native-chat-actions>button{color:var(--ui-muted)!important;border-radius:8px!important}
+.team-native-studio-root .native-sidebar-heading button:hover,.team-native-studio-root .studio-native-tools summary:hover,.team-native-studio-root .studio-native-tools-trigger:hover,.team-native-studio-root .studio-native-chat-actions>button:hover{background:var(--ui-soft)!important;color:var(--ui-accent)!important}
+.team-native-studio-root .studio-chat-context-inline{background:transparent!important}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-context-chip,.team-native-studio-root .studio-chat-skill-picker select{border-color:var(--ui-outline)!important;background:var(--ui-soft)!important;color:var(--ui-ink)!important}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-context-chip b,.team-native-studio-root .studio-chat-skill-picker>span{color:var(--ui-muted)!important}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-context-chip strong{color:var(--ui-accent)!important}
+.team-native-studio-root .native-sidebar-toolbar{background:var(--ui-panel)!important;border-bottom-color:var(--ui-line)!important}
+.team-native-studio-root .studio-reference-queue{border-bottom-color:var(--ui-line)!important;background:var(--ui-soft)!important;color:var(--ui-muted)!important}
+.team-native-studio-root .studio-reference-queue>div{background:var(--ui-panel)!important;border:1px solid var(--ui-line);color:var(--ui-ink)!important}
+.team-native-studio-root .studio-agent-runtime{background:var(--ui-panel)!important}
+.team-native-studio-root .studio-native-panel{background:var(--ui-panel)!important;border-color:var(--ui-outline)!important;color:var(--ui-ink)!important;box-shadow:var(--ui-shadow)}
+.team-native-studio-root .studio-mobile-mode{background:var(--ui-sidebar)!important;border-bottom:1px solid var(--ui-line)!important;padding:4px 8px!important;gap:6px!important}
+.team-native-studio-root .studio-mobile-mode>button{min-height:32px;padding:6px 12px!important;border:1px solid transparent!important;border-radius:9px!important;background:transparent!important;color:var(--ui-muted)!important;font-size:11px!important;font-weight:600}
+.team-native-studio-root .studio-mobile-mode>button:hover{background:var(--ui-soft)!important;color:var(--ui-ink)!important}
+.team-native-studio-root .studio-mobile-mode>button[aria-pressed=true]{background:var(--ui-panel)!important;border-color:var(--ui-outline)!important;color:var(--ui-accent)!important;box-shadow:0 2px 8px rgba(28,48,38,.06)}
+
+@media(max-width:760px){
+ .team-native-studio-root .studio-navigator{padding:12px 9px 10px!important}
+ .team-native-studio-root .studio-browser{padding:16px 13px 32px!important}
+ .team-native-studio-root .studio-browser-heading{margin-bottom:14px!important}
+ .team-native-studio-root .studio-browser-heading h1{font-size:20px!important}
+ .team-native-studio-root .studio-content-toolbar{flex-wrap:wrap}
+ .team-native-studio-root .studio-content-toolbar .studio-search{flex:1 1 100%;order:0}
+ .team-native-studio-root .studio-content-toolbar select{flex:1 1 0;max-width:none;min-width:0}
+ .team-native-studio-root .studio-content-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ .team-native-studio-root .studio-content-grid.studio-video-grid{grid-template-columns:1fr!important}
+ .team-native-studio-root .studio-card-preview{height:128px!important}
+ .team-native-studio-root .studio-card-preview.kind-video{height:166px!important}
+ .team-native-studio-root .studio-content-copy{padding:11px!important}
+ .team-native-studio-root .studio-content-copy>strong{font-size:11px!important}
+ .team-native-studio-root .studio-content-copy>small{font-size:9px!important}
+}
+
+@media(prefers-color-scheme:dark){
+ .team-native-studio-root{--ui-shadow:0 14px 36px rgba(0,0,0,.24)}
+ .team-native-studio-root .studio-content-card{box-shadow:none}
+ .team-native-studio-root .studio-content-card:hover{box-shadow:0 10px 24px rgba(0,0,0,.22)}
+}
+
+/* Density and readability pass: keep the three panes present, but give the
+   centre gallery and the native chat the visual weight of a real workbench.
+   These rules are presentation-only; state, data hooks and event targets
+   remain unchanged. */
+@media(min-width:1201px){
+  .team-native-studio-root .project-studio[data-agent-docked=true]{grid-template-columns:220px minmax(0,1fr) minmax(390px,36vw)!important}
+}
+@media(min-width:761px) and (max-width:1200px){
+  .team-native-studio-root .project-studio[data-agent-docked=true]{grid-template-columns:188px minmax(0,1fr) minmax(360px,36vw)!important}
+}
+@media(min-width:761px){
+  .team-native-studio-root .studio-navigator{padding:14px 10px 10px!important}
+  .team-native-studio-root .studio-project-title{padding:7px 8px 14px!important}
+  .team-native-studio-root .studio-sidebar-caption{margin:4px 8px 6px!important}
+  .team-native-studio-root .studio-navigator nav>button{min-height:36px;padding:7px 9px!important}
+  .team-native-studio-root .studio-browser{padding:20px 24px 34px!important}
+  .team-native-studio-root .studio-browser-heading{margin-bottom:14px!important}
+}
+.team-native-studio-root .studio-content-grid{gap:12px!important}
+.team-native-studio-root .studio-card-preview{height:146px!important}
+.team-native-studio-root .studio-card-preview.kind-video{height:158px!important}
+.team-native-studio-root .studio-content-copy{padding:11px 12px 12px!important}
+.team-native-studio-root .studio-content-copy>strong{font-size:13px!important;line-height:1.45!important}
+.team-native-studio-root .studio-content-copy>small{font-size:11px!important;line-height:1.45!important}
+.team-native-studio-root .studio-shot-label{font-size:11px!important}
+.team-native-studio-root .studio-card-actions button,.team-native-studio-root .studio-card-actions a{font-size:11px!important}
+
+.team-native-studio-root .studio-agent-runtime{background:var(--ui-bg)!important}
+.team-native-studio-root .native-chat-surface{background:var(--ui-bg)!important}
+.team-native-studio-root .studio-agent>header{min-height:44px;height:44px;padding:6px 12px!important}
+.team-native-studio-root .native-sidebar-session-name strong{font-size:12.5px!important}
+.team-native-studio-root .native-sidebar-session-name span{font-size:10.5px!important}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-context-chip{padding:4px 7px;font-size:10.5px}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-context-chip strong{max-width:120px}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-skill-picker[data-skill-picker-placement="context"]{display:none!important}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-skill-picker{font-size:10.5px}
+.team-native-studio-root .studio-chat-context-inline .studio-chat-skill-picker select{height:25px;font-size:10.5px}
+.team-native-studio-root .studio-native-tools-trigger,.team-native-studio-root .studio-sidebar-history-trigger,.team-native-studio-root .studio-native-chat-actions>button{font-size:11px!important}
+.team-native-studio-root .wSkVaW_scrollBody{justify-content:flex-end!important;padding:0 4px 14px!important}
+.team-native-studio-root .wSkVaW_composerSeat{padding-bottom:12px!important}
+.team-native-studio-root [data-composer-card]{border:1px solid var(--ui-outline)!important;border-radius:16px!important;background:var(--ui-panel)!important;box-shadow:0 10px 28px rgba(28,48,38,.08)!important;padding-top:10px!important}
+.team-native-studio-root [data-composer-input]{font-size:15px!important;line-height:1.6!important;min-height:56px;color:var(--ui-ink)!important}
+.team-native-studio-root [data-composer-input]::selection{background:color-mix(in srgb,var(--ui-accent) 22%,transparent)}
+.team-native-studio-root .uV2eYG_row{font-size:14px!important}
+
+/* The native composer can expose long model names. Keep its action row
+   inside the agent column so the send control never falls outside the panel. */
+.team-native-studio-root .uV2eYG_row:not(:has(.uV2eYG_trailingActive)){display:grid!important;grid-template-columns:minmax(0,1fr) 38px!important;gap:6px!important;padding:0!important}
+.team-native-studio-root .uV2eYG_row:not(:has(.uV2eYG_trailingActive))>.uV2eYG_tools{grid-area:1/1;min-width:0;min-height:38px;gap:6px}
+.team-native-studio-root .uV2eYG_trailing:not(.uV2eYG_trailingActive){display:contents!important}
+.team-native-studio-root .uV2eYG_trailing:not(.uV2eYG_trailingActive)>.uV2eYG_standardControls:not([hidden]){grid-area:2/1/3/-1;display:flex!important;flex-wrap:wrap!important;align-items:center;gap:5px!important;width:100%!important;min-width:0!important;max-width:100%!important;overflow:hidden}
+.team-native-studio-root .uV2eYG_trailing:not(.uV2eYG_trailingActive)>.uV2eYG_primary{grid-row:1;grid-column:2;width:38px;height:38px;transform:none}
+.team-native-studio-root .uV2eYG_standardControls select,.team-native-studio-root .uV2eYG_standardControls ._7KE1Ra_trigger{max-width:100%;min-width:0}
+
+@media(max-width:760px){
+  .team-native-studio-root .studio-browser{padding:14px 12px 28px!important}
+  .team-native-studio-root .studio-browser-heading{margin-bottom:12px!important}
+  .team-native-studio-root .studio-card-preview{height:116px!important}
+  .team-native-studio-root .studio-card-preview.kind-video{height:148px!important}
+  .team-native-studio-root .studio-content-copy{padding:10px!important}
+  .team-native-studio-root .studio-content-copy>strong{font-size:12px!important}
+  .team-native-studio-root .studio-content-copy>small{font-size:10.5px!important}
+  .team-native-studio-root .studio-agent>header{height:38px;min-height:38px;padding:2px 8px!important}
+  .team-native-studio-root .native-sidebar-session-name strong{font-size:12px!important}
+  .team-native-studio-root .native-sidebar-session-name span{font-size:10px!important}
+  .team-native-studio-root .studio-chat-context-inline .studio-chat-context-chip{font-size:10px}
+  .team-native-studio-root .studio-chat-context-inline .studio-chat-skill-picker{font-size:10px}
+  .team-native-studio-root .wSkVaW_scrollBody{padding:0 2px 10px!important}
+  .team-native-studio-root .wSkVaW_composerSeat{padding-bottom:8px!important}
+  .team-native-studio-root [data-composer-input]{font-size:15px!important;line-height:1.55!important}
+}

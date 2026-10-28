@@ -1,0 +1,16 @@
+const fs=require('node:fs');
+const path=require('node:path');
+const {randomUUID}=require('node:crypto');
+const {requestJSON,normalizeOrigin}=require('./connection.cjs');
+const GATEWAY='https://work.cyj123.top';
+class AccountEntry {
+ constructor({filename,storage,connection,connect,onIdentityChange=()=>{},request=requestJSON}){Object.assign(this,{filename,storage,connection,connect,onIdentityChange,request});this.token='';this.busy=false;this.loaded=false;}
+ read(){if(this.loaded)return;if(!fs.existsSync(this.filename)){this.loaded=true;return;}if(!this.storage.isEncryptionAvailable())throw Error('钥匙串暂不可用，已保存的账号登录仍保留');const st=fs.lstatSync(this.filename);if(!st.isFile()||st.isSymbolicLink()||st.size>16384)throw Error('账号登录记录无效');const v=JSON.parse(this.storage.decryptString(Buffer.from(fs.readFileSync(this.filename,'utf8'),'base64')));if(v.gateway!==GATEWAY||!/^wawu_account_[A-Za-z0-9_-]{43}$/.test(v.token))throw Error('账号登录记录无效');this.token=v.token;this.loaded=true;}
+ save(){if(!this.storage.isEncryptionAvailable())throw Error('钥匙串暂不可用，账号密码未保存');fs.mkdirSync(path.dirname(this.filename),{recursive:true,mode:0o700});const tmp=this.filename+'.'+randomUUID()+'.tmp';fs.writeFileSync(tmp,this.storage.encryptString(JSON.stringify({gateway:GATEWAY,token:this.token})).toString('base64'),{mode:0o600});fs.renameSync(tmp,this.filename);}
+ async call(action,body={}){this.read();const r=await this.request(GATEWAY,'/account-api/'+action,'POST',body,this.token?{Authorization:'Bearer '+this.token}:{},45000);if(r.status!==200){if(r.status===401&&action!=='login'){this.token='';if(fs.existsSync(this.filename))fs.unlinkSync(this.filename);}throw Object.assign(Error(r.data?.error||'账号入口暂不可用'),{status:r.status});}return r.data;}
+ async directory(){this.read();return this.token?this.call('me'):null;}
+ async login(body){if(typeof body?.username!=='string'||typeof body.password!=='string'||body.username.length>80||body.password.length>256)throw Error('请输入账号密码');const value=await this.call('login',{username:body.username,password:body.password});this.token=value.token;this.save();const {token,...publicValue}=value;return publicValue;}
+ async open(id){if(this.busy)throw Error('账号连接正在进行');this.busy=true;try{const directory=await this.directory(),host=directory?.hosts.find(h=>h.id===id);if(!host)throw Error('当前账号无权访问此主机');const r=await this.call('open',{serverId:id,client:'c'});if(r.serverId!==id||r.host?.id!==id||r.host.origin!==host.origin||normalizeOrigin(host.origin)!==host.origin||!/^team_session(?:_http)?=[a-f0-9]{64};/.test(r.cookie))throw Error('主机身份校验失败');this.onIdentityChange();const result=await this.connect(host.origin,id);const epoch=this.connection.epoch;this.connection.cookie=r.cookie.split(';')[0];const me=await this.connection.call('/api/me');if(me.status!==200||me.data.user?.id!==r.user?.id||typeof me.data.csrf!=='string'||epoch!==this.connection.epoch){this.connection.disconnect();throw Error('主机账号校验失败');}this.connection.csrf=me.data.csrf;this.connection.userId=me.data.user.id;return result;}finally{this.busy=false;}}
+ async logout(){this.read();if(this.token)await this.call('logout');this.token='';if(fs.existsSync(this.filename))fs.unlinkSync(this.filename);return true;}
+}
+module.exports={AccountEntry,GATEWAY};

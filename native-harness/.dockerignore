@@ -1,0 +1,7 @@
+*
+!package.json
+!package-lock.json
+!Dockerfile
+!remove-welcome-notice.mjs
+
+!preserve-team-tools.mjs

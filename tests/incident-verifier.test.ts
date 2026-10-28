@@ -1,0 +1,8 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {mkdtempSync,mkdirSync,writeFileSync,rmSync} from 'node:fs';import {tmpdir} from 'node:os';import {join} from 'node:path';import {execFileSync} from 'node:child_process';import {dockerVerifier} from '../server/incident-verifier.ts';
+test('independent Docker verifier executes regression in isolation and rejects modified trusted tests',async t=>{
+ const docker='/opt/homebrew/bin/docker',image='team-native-harness:0.1.5-rc.2';try{execFileSync(docker,['image','inspect',image],{stdio:'ignore',timeout:5000});}catch{t.skip('pinned verification image unavailable');return;}
+ const root=mkdtempSync(join(tmpdir(),'incident-verifier-')),source=join(root,'original'),work=join(root,'repair');mkdirSync(source);mkdirSync(join(work,'source'),{recursive:true});
+ const testCode="const fs=require('node:fs');if(fs.existsSync('/Users'))throw Error('Host unexpectedly mounted');if(process.env.OPENAI_API_KEY)throw Error('Credential was inherited');console.log('isolated check passed');";
+ writeFileSync(join(source,'check.cjs'),testCode);writeFileSync(join(work,'source/check.cjs'),testCode);
+ try{const verify=dockerVerifier({docker,image,commands:[['node','check.cjs']],trustedPaths:['check.cjs']},source);const result=await verify(work,new AbortController().signal);assert(result.passed);assert.match(result.checks[0].output,/isolated check passed/);writeFileSync(join(work,'source/check.cjs'),'process.exit(0)');await assert.rejects(()=>verify(work,new AbortController().signal),/修改了受保护回归测试/);}finally{rmSync(root,{recursive:true,force:true});}
+});

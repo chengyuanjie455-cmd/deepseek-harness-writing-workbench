@@ -1,0 +1,183 @@
+/* Embedded team pages use the same design tokens as native settings. */
+html[data-team-settings-ui] {
+  --settings-bg: var(--dsw-alias-bg-layer-2, #fff);
+  --settings-field: var(--dsw-alias-bg-layer-3, #f7f7f8);
+  --settings-text: var(--dsw-alias-label-primary, #1c1c1e);
+  --settings-secondary: var(--dsw-alias-label-secondary, #50535a);
+  --settings-muted: var(--dsw-alias-label-tertiary, #696e77);
+  --settings-line: var(--dsw-alias-border-l2, #0000001f);
+  --settings-outline: var(--dsw-alias-border-l4, #00000026);
+  --settings-hover: var(--dsw-alias-interactive-bg-hover, #00000008);
+  --settings-action: var(--dsw-alias-label-primary, #1c1c1e);
+  --settings-on-action: var(--dsw-alias-label-primary-foreground, #fff);
+  --settings-focus: var(--dsw-alias-state-business-primary, #5686fe);
+  --ink: var(--settings-text);
+  --muted: var(--settings-muted);
+  --border: var(--settings-line);
+  --panel: var(--settings-field);
+  --admin-surface: var(--settings-bg);
+  --hover: var(--settings-hover);
+  --blue: var(--settings-action);
+  --chat-text: var(--settings-text);
+  --chat-secondary: var(--settings-secondary);
+  --chat-caption: var(--settings-muted);
+  --chat-surface: var(--settings-bg);
+  background: var(--settings-bg);
+  color: var(--settings-text);
+  font-family: var(--dsw-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  font-size: 13px;
+  line-height: 1.5;
+}
+html[data-settings-theme=dark] { --settings-on-action: #0f1115; }
+html[data-settings-theme=light] { --settings-on-action: #fff; }
+html[data-team-settings-ui] body { margin: 0; background: var(--settings-bg); color: var(--settings-text); font: inherit; }
+html[data-team-settings-ui] * { scrollbar-width: thin; scrollbar-color: var(--dsw-alias-scrollbar-bg-l2, #9997) transparent; }
+.embedded-settings { padding: 0 0 8px; min-height: 100vh; background: var(--settings-bg); color: var(--settings-text); font: inherit; overflow-wrap: anywhere; }
+.embedded-settings h2, .embedded-settings .admin-section-intro h3, .embedded-settings .ops-heading h3 { font-size: 18px; font-weight: 600; line-height: 1.4; margin: 0 0 8px; }
+.embedded-settings h3 { font-size: 15px; font-weight: 600; line-height: 1.4; margin: 0 0 8px; }
+.embedded-settings h4 { font-size: 13px; font-weight: 500; margin: 18px 0 10px; }
+.embedded-settings p { font-size: 13px; line-height: 1.6; margin: 8px 0 12px; }
+.embedded-settings small, .embedded-settings .small { font-size: 12px; line-height: 1.5; }
+.embedded-settings .muted, .embedded-settings small, .embedded-settings .section-label { color: var(--settings-muted); }
+.embedded-settings > p.muted, .embedded-settings .admin-section-intro p, .embedded-settings .ops-heading p { font-size: 13px; margin: 0 0 16px; color: var(--settings-muted); }
+.embedded-settings .section-label { font-size: 11px; letter-spacing: 0; margin-bottom: 6px; }
+.embedded-settings .admin-section-intro, .embedded-settings .ops-heading { margin: 0 0 16px; }
+.embedded-settings .card, .embedded-settings .admin-card { border: .5px solid var(--settings-outline); border-radius: 16px; padding: 18px; margin: 14px 0; background: var(--settings-field); box-shadow: none; min-width: 0; }
+.embedded-settings .card > .section-label { display: none; }
+.embedded-settings .admin-grid, .embedded-settings .media-admin-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.embedded-settings .admin-grid > .card { margin: 0; }
+.embedded-settings button, html[data-team-settings-ui] .folder-dialog button {
+  min-height: 32px; border: .5px solid var(--settings-outline); border-radius: 8px; padding: 5px 12px;
+  background: transparent; color: var(--settings-text); font: inherit; font-size: 13px; line-height: 20px; cursor: pointer; transition: background .12s, border-color .12s;
+}
+.embedded-settings button:hover:not(:disabled), html[data-team-settings-ui] .folder-dialog button:hover:not(:disabled) { background: var(--settings-hover); }
+.embedded-settings button:disabled, html[data-team-settings-ui] .folder-dialog button:disabled { opacity: .4; cursor: default; }
+.embedded-settings button.primary, html[data-team-settings-ui] .folder-dialog button.primary { color: var(--settings-on-action); background: var(--settings-action); border-color: transparent; }
+.embedded-settings button.primary:hover:not(:disabled), html[data-team-settings-ui] .folder-dialog button.primary:hover:not(:disabled) { background: var(--settings-action); filter: brightness(.9); }
+.embedded-settings .text-button { border: 0; color: var(--settings-secondary); }
+.embedded-settings :is(button,input,select,textarea,summary):focus-visible, html[data-team-settings-ui] .folder-dialog :is(button,input):focus-visible { outline: 2px solid var(--settings-focus); outline-offset: 2px; }
+.embedded-settings label, html[data-team-settings-ui] .folder-dialog label { display: flex; flex-direction: column; gap: 6px; margin: 0 0 14px; min-width: 0; font-size: 13px; line-height: 1.5; color: var(--settings-text); }
+.embedded-settings input:not([type=checkbox]):not([type=radio]), .embedded-settings select, .embedded-settings textarea, html[data-team-settings-ui] .folder-dialog input {
+  width: 100%; min-width: 0; min-height: 34px; height: 34px; margin: 0; padding: 6px 10px; font: inherit; font-size: 13px; line-height: 20px;
+  border: .5px solid var(--settings-outline); border-radius: 8px; color: var(--settings-text); background: var(--settings-bg); box-shadow: none;
+}
+.embedded-settings textarea { height: auto; min-height: 96px; resize: vertical; }
+.embedded-settings input::placeholder, .embedded-settings textarea::placeholder { color: var(--settings-muted); opacity: .85; }
+.embedded-settings :is(input,select,textarea):disabled { opacity: .5; }
+.embedded-settings input[type=checkbox], .embedded-settings input[type=radio] { width: 15px; height: 15px; min-height: 0; margin: 0; accent-color: var(--settings-action); flex: none; }
+.embedded-settings label:has(>input[type=checkbox]), .embedded-settings label:has(>input[type=radio]), .embedded-settings .check { flex-direction: row; align-items: center; gap: 8px; }
+.embedded-settings :is(fieldset,.chat-policy-models) { border: .5px solid var(--settings-line); border-radius: 10px; padding: 10px; min-width: 0; }
+.embedded-settings .chat-policy-models { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(240px,100%),1fr)); gap: 4px; max-height: 280px; overflow: auto; }
+.embedded-settings .chat-policy-models label { padding: 6px; margin: 0; font-size: 13px; }
+.embedded-settings .chat-policy-models label:hover { background: var(--settings-hover); border-radius: 6px; }
+.embedded-settings .actions { gap: 8px; margin: 14px 0 0; flex-wrap: wrap; }
+.embedded-settings :is(.admin-subtabs,.ops-tabs) { display: flex; align-items: flex-end; gap: 22px; margin: 4px 0 16px; padding: 0; border-bottom: .5px solid var(--settings-line); flex-wrap: nowrap; overflow-x: auto; }
+.embedded-settings :is(.admin-subtabs,.ops-tabs) button { position: relative; flex: none; padding: 7px 1px 9px; min-height: 36px; border: 0; border-radius: 0; background: none; color: var(--settings-muted); font-size: 13px; font-weight: 400; }
+.embedded-settings :is(.admin-subtabs,.ops-tabs) button:hover, .embedded-settings :is(.admin-subtabs,.ops-tabs) button[aria-pressed=true] { color: var(--settings-text); background: none; }
+.embedded-settings :is(.admin-subtabs,.ops-tabs) button[aria-pressed=true]::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; border-radius: 2px 2px 0 0; background: var(--settings-text); }
+.embedded-settings .chat-provider-grid { grid-template-columns: 1fr; gap: 0; margin: 4px 0 16px; }
+.embedded-settings .chat-provider-card { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; column-gap: 16px; row-gap: 4px; padding: 10px 0; border: 0; border-bottom: .5px solid var(--settings-line); border-radius: 0; background: none; }
+.embedded-settings .chat-provider-card b { font-size: 13px; font-weight: 500; }
+.embedded-settings .chat-provider-card p { grid-column: 1; margin: 0; font-size: 12px; }
+.embedded-settings .chat-provider-card button { grid-column: 2; grid-row: 1; align-self: center; margin: 0; }
+.embedded-settings .chat-model-row, .embedded-settings .video-config-row, .embedded-settings .user-row { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 14px 0; border: 0; border-bottom: .5px solid var(--settings-line); margin: 0; border-radius: 0; background: transparent; }
+.embedded-settings :is(.chat-model-row,.video-config-row,.user-row)>div { flex: 1; min-width: 0; }
+.embedded-settings :is(.chat-model-row,.video-config-row,.user-row) b { font-size: 13px; font-weight: 500; }
+.embedded-settings :is(.chat-model-row,.video-config-row,.user-row) small { display: block; margin-top: 4px; font-size: 12px; }
+.embedded-settings .chat-model-row > button, .embedded-settings .user-row > button { flex: none; }
+.embedded-settings .user-row .avatar { width: 32px; height: 32px; background: var(--settings-hover); color: var(--settings-secondary); border-radius: 50%; }
+.embedded-settings .chat-model-form { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 16px; padding: 18px 0; border-block: .5px solid var(--settings-line); background: none; }
+.embedded-settings .chat-model-form .wide { grid-column: 1 / -1; }
+.embedded-settings details { margin: 16px 0; color: var(--settings-secondary); font-size: 13px; }
+.embedded-settings summary { padding: 7px 0; color: var(--settings-text); font-size: 13px; }
+.embedded-settings .settings-advanced { padding: 0; border-top: .5px solid var(--settings-line); }
+.embedded-settings .selected-folder { border: .5px solid var(--settings-outline); border-radius: 10px; background: var(--settings-bg); padding: 12px; }
+.embedded-settings .selected-folder strong, .embedded-settings .field-label { font-size: 13px; font-weight: 500; color: var(--settings-text); }
+.embedded-settings .selected-folder small { font-size: 12px; }
+.embedded-settings .folder-symbol { background: transparent; color: var(--settings-secondary); }
+.embedded-settings .billing-totals { gap: 12px; margin: 16px 0; }
+.embedded-settings .billing-totals .card { margin: 0; padding: 16px; }
+.embedded-settings .billing-totals .section-label { display: block; }
+.embedded-settings .billing-totals strong { font-size: 22px; margin: 8px 0; }
+.embedded-settings :is(.billing-filter,.ops-filters) { gap: 10px; margin: 14px 0; }
+.embedded-settings :is(.billing-filter,.ops-filters) label { margin: 0; }
+.embedded-settings .billing-price-list { max-height: none; overflow: visible; }
+.embedded-settings :is(.billing-table-scroll,.ops-table-scroll) { border: .5px solid var(--settings-line); border-radius: 10px; margin-top: 14px; max-height: 480px; }
+.embedded-settings :is(.billing-table,.ops-table) { font-size: 12px; }
+.embedded-settings :is(.billing-table,.ops-table) th { font-weight: 500; font-size: 12px; padding: 10px 12px; background: var(--settings-bg); color: var(--settings-muted); border-color: var(--settings-line); }
+.embedded-settings :is(.billing-table,.ops-table) td { padding: 12px; color: var(--settings-text); border-color: var(--settings-line); }
+.embedded-settings :is(.billing-table,.ops-table) small { font-size: 11px; color: var(--settings-muted); }
+.embedded-settings :is(.billing-table,.ops-table) tr:hover { background: var(--settings-hover); }
+.embedded-settings :is(.billing-table,.ops-table) td button { white-space: nowrap; }
+.embedded-settings .ops-stack { gap: 14px; }
+.embedded-settings .ops-metrics { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 10px; }
+.embedded-settings button.ops-metric { min-width: 0; text-align: left; padding: 14px; border-radius: 14px; background: var(--settings-field); display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.embedded-settings .ops-metric strong { font-size: 24px; font-weight: 600; }
+.embedded-settings .ops-metric span, .embedded-settings .ops-metric small { font-size: 12px; }
+.embedded-settings .ops-heading { align-items: flex-start; }
+.embedded-settings .ops-toolbar { gap: 10px; flex-wrap: wrap; }
+.embedded-settings .ops-toolbar label { margin: 0; white-space: nowrap; }
+.embedded-settings .ops-updated { font-size: 12px; margin: 0 0 16px; }
+.embedded-settings .ops-console .admin-card > button { margin-top: 12px; }
+.embedded-settings .ops-console dl { font-size: 13px; gap: 12px; }
+.embedded-settings .ops-badge, .embedded-settings .badge { font-size: 11px; padding: 3px 8px; border-radius: 6px; }
+.embedded-settings .notice { margin: 14px 0; background: var(--settings-hover); color: var(--settings-secondary); border: .5px solid var(--settings-line); border-radius: 10px; padding: 12px; font-size: 12px; }
+.embedded-settings .error { margin: 14px 0; background: color-mix(in srgb,var(--dsw-alias-state-error-primary,#ba3434) 10%,transparent); color: var(--dsw-alias-state-error-primary,#ba3434); border-radius: 10px; padding: 12px; font-size: 12px; }
+html[data-team-settings-ui] .folder-dialog { background: var(--settings-bg); color: var(--settings-text); border: .5px solid var(--settings-outline); border-radius: 20px; max-height: calc(100dvh - 16px); max-width: calc(100vw - 16px); }
+html[data-team-settings-ui] .folder-dialog :is(header,footer,nav,.folder-browser-main) { background: var(--settings-bg); border-color: var(--settings-line); }
+html[data-team-settings-ui] .folder-dialog h2 { font-size: 18px; line-height: 1.4; margin: 0 0 8px; }
+html[data-team-settings-ui] .folder-dialog p, html[data-team-settings-ui] .folder-dialog .section-label { font-size: 12px; color: var(--settings-muted); }
+html[data-team-settings-ui] .folder-list button { min-height: 38px; border: 0; border-bottom: .5px solid var(--settings-line); border-radius: 0; }
+html[data-team-settings-ui] .folder-browser nav button.selected { background: var(--settings-hover); color: var(--settings-text); }
+html[data-team-settings-ui] .folder-location { background: var(--settings-field); color: var(--settings-secondary); border-radius: 8px; }
+@media(max-width:650px) {
+ .embedded-settings .chat-model-form, .embedded-settings .billing-totals { grid-template-columns: 1fr; }
+ .embedded-settings .ops-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .embedded-settings .ops-heading { flex-direction: column; }
+ .embedded-settings .chat-provider-card { column-gap: 8px; }
+ .embedded-settings .chat-provider-card button { margin-top: 2px; }
+ .embedded-settings .card, .embedded-settings .admin-card { padding: 14px; }
+ .embedded-settings :is(.admin-subtabs,.ops-tabs) { gap: 16px; }
+ .embedded-settings .video-config-row { flex-wrap: wrap; }
+ .embedded-settings .billing-filter label, .embedded-settings .ops-filters label, .embedded-settings .ops-filters .ops-search { min-width: min(150px,100%); }
+}
+
+/* Layout follows the available settings pane, rather than a full admin page. */
+.embedded-settings .provider-status { display: inline-block; margin-left: 10px; font-size: 11px; color: var(--settings-muted); font-weight: 400; }
+.embedded-settings .provider-help { margin: 3px 0 0; font-size: 12px; }
+.embedded-settings .provider-help summary { padding: 0; font-size: 12px; color: var(--settings-muted); cursor: pointer; }
+.embedded-settings .provider-help p { margin: 6px 0 2px; }
+.embedded-settings .settings-count { margin-left: 8px; color: var(--settings-muted); font-size: 12px; font-weight: 400; }
+.embedded-settings .settings-model-list { max-height: 280px; overflow-y: auto; overscroll-behavior: contain; }
+.embedded-settings .chat-model-row { padding: 10px 0; }
+.embedded-settings .chat-model-row:last-child { border-bottom: 0; }
+.embedded-settings .ops-console button:not(.ops-metric) { padding: 5px 12px; }
+.embedded-settings .ops-console .ops-tabs button { padding: 7px 1px 9px; }
+.embedded-settings .ops-stack > .card { margin: 0; }
+.embedded-settings .ops-console .admin-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.embedded-settings .ops-heading > div, .embedded-settings .ops-toolbar { min-width: 0; }
+.embedded-settings .ops-heading .ops-toolbar { flex: none; }
+.embedded-settings .ops-console dl { grid-template-columns: auto minmax(0,1fr); column-gap: 16px; row-gap: 10px; }
+.embedded-settings .billing-totals { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.embedded-settings .billing-filter { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.5fr) auto; align-items: end; }
+.embedded-settings form.billing-filter { grid-template-columns: repeat(2,minmax(0,1fr)) auto auto; }
+.embedded-settings .billing-filter label, .embedded-settings .billing-filter .billing-search { min-width: 0; width: auto; }
+.embedded-settings .billing-filter > button { margin: 0 0 1px; white-space: nowrap; }
+.embedded-settings .video-config-row > b { flex: 1; min-width: 0; }
+.embedded-settings .media-admin-grid > .admin-card > form { column-gap: 16px; }
+@media(max-width:650px) {
+ .embedded-settings .ops-console .admin-grid { grid-template-columns: minmax(0,1fr); }
+ .embedded-settings :is(.billing-filter,form.billing-filter) { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .embedded-settings .billing-totals { gap: 8px; }
+ .embedded-settings .billing-totals .card { padding: 10px; }
+ .embedded-settings .billing-totals strong { font-size: 18px; }
+}
+@media(max-width:360px) {
+ .embedded-settings :is(.billing-filter,form.billing-filter,.billing-totals) { grid-template-columns: minmax(0,1fr); }
+ .embedded-settings .provider-status { display: block; margin-left: 0; }
+ .embedded-settings .user-row, .embedded-settings .chat-model-row { flex-wrap: wrap; gap: 8px; }
+}
+.embedded-settings .ops-console .admin-card h3 { font-size: 15px; }
+@media(max-width:360px) { .embedded-settings .ops-metrics { grid-template-columns: 1fr; } }
+
+.ops-alert{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--dsw-alias-border-l1,#ddd)}.ops-alert p{margin:4px 0}.ops-trace ol{display:grid;gap:10px;padding-left:22px}.ops-trace li small{display:block;color:var(--dsw-alias-label-caption,#777)}.ops-trace details p{white-space:pre-wrap;overflow-wrap:anywhere}

@@ -1,0 +1,10 @@
+import React,{useEffect,useState} from 'react';
+export function AccountEntry({onConnected,onClose}:{onConnected:(c:any)=>void;onClose?:()=>void}){
+ const bridge=window.teamDesktop!;
+ const [directory,setDirectory]=useState<any>(),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ const value=async(p:Promise<any>)=>{const r=await p;if(!r.ok)throw Error(r.error);return r.value;};
+ async function run(fn:()=>Promise<void>){if(busy)return;setBusy(true);setError('');try{await fn();}catch(e:any){setError(e.message);}finally{setBusy(false);}}
+ useEffect(()=>{void run(async()=>setDirectory(await value(bridge.accountDirectory!())));},[]);
+ const open=async(id:string)=>onConnected(await value(bridge.accountOpen!(id)));
+ return <div className="account-entry"><h1>{directory?'可访问的主机':'登录工作台'}</h1><p className="muted">{directory?directory.account.name:'使用团队账号，自动连接可用主机。'}</p>{directory?<><div className="desktop-known-hosts">{directory.hosts.map((h:any)=><button key={h.id} className="desktop-server" disabled={busy} onClick={()=>void run(()=>open(h.id))}><b>{h.name}</b>{directory.defaultHost===h.id&&<small>默认主机</small>}</button>)}{!directory.hosts.length&&<p>此账号暂未分配主机，请联系管理员。</p>}</div><button className="secondary" disabled={busy} onClick={()=>void run(async()=>{await value(bridge.accountLogout!());setDirectory(null);})}>切换账号</button></>:<form onSubmit={e=>{e.preventDefault();const form=e.currentTarget,data=new FormData(form);void run(async()=>{const d=await value(bridge.accountLogin!({username:String(data.get('username')),password:String(data.get('password'))}));form.reset();setDirectory(d);if(d.defaultHost)await open(d.defaultHost);});}}><label>账号<input name="username" autoComplete="username" required disabled={busy}/></label><label>密码<input name="password" type="password" autoComplete="current-password" required disabled={busy}/></label><button className="primary full" disabled={busy}>{busy?'正在连接…':'登录并继续'}</button><p className="small muted">登录凭据由本机钥匙串保护。</p></form>}{error&&<p className="error" role="alert">{error}</p>}{onClose&&<button className="text-button" disabled={busy} onClick={onClose}>返回当前工作台</button>}</div>;
+}

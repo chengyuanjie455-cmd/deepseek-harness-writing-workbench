@@ -1,0 +1,41 @@
+{
+  "source": "<LOCAL_SOURCE_ROOT>",
+  "generatedAt": "2026-10-28",
+  "includedFileCount": 6125,
+  "excludedRules": [
+    ".DS_Store",
+    ".git",
+    ".playwright-cli",
+    "HANDOFF.md",
+    "data",
+    "desktop/out",
+    "desktop/package-stage",
+    "desktop/runtime",
+    "desktop/signing-identity.json",
+    "desktop/ui",
+    "dist",
+    "docs/history/",
+    "native-harness/node_modules",
+    "native-harness/team-project/studio.cjs",
+    "native-harness/team-project/studio.css",
+    "node_modules",
+    "output",
+    "outputs",
+    "runtime",
+    "scripts/check-machines.py",
+    "scripts/endurance-",
+    "scripts/incident-",
+    "scripts/independent-restore-drill.ts",
+    "scripts/live-",
+    "scripts/storage-",
+    "scripts/validate-storage-host.ts",
+    "tests/live-entry-worker.test.ts",
+    "vendor/magpie.UPSTREAM.json",
+    "work"
+  ],
+  "archiveScope": "sanitized source only; no runtime data, business files, credentials, logs, binaries, or signing identity",
+  "includedSourceData": [
+    "server/data/ruiyun-contracts.json",
+    "server/data/xiaopei-contracts.json"
+  ]
+}

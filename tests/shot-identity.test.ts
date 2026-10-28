@@ -1,0 +1,51 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {mkdtempSync,realpathSync,rmSync} from 'node:fs';import {tmpdir} from 'node:os';import {join} from 'node:path';import {Readable} from 'node:stream';
+import {Platform} from '../server/app.ts';import {hash,id,type Doc} from '../server/store.ts';
+async function fixture(){const root=realpathSync(mkdtempSync(join(tmpdir(),'stable-shots-'))),app=new Platform({dataDir:root,nativeOnly:true,mediaWorker:false,concurrency:500,videoConcurrency:500}),admin=app.newUser({username:'admin',password:'Synthetic-shot-identity-20261021!'},'admin'),user=app.newUser({username:'member',password:'Synthetic-shot-identity-20261021!'},'member'),ws=app.workspace('shared');
+ const publish=(writes:Record<string,string>)=>{const c=ws.projects.candidate(admin,ws.projects.current().revision,writes,{});ws.projects.approve(c,admin,c.digest);};
+ const update=(shot:Doc,shotId?:string,request=id())=>ws.links.update(user,{operation:'upsert',expected_index_sha256:ws.links.read(user).indexSHA256,...(shotId?{shot_id:shotId}:{}),shot},request);
+ return {app,admin,user,ws,publish,update,close:async()=>{await app.close();rmSync(root,{recursive:true,force:true});}};
+}
+test('shot labels, inserts and episode moves preserve stable identities and original generation inputs',async()=>{
+ const f=await fixture();try{
+  f.publish({'剧本.md':'林一回头。','分镜.md':'林一近景，望向画左。','人物.md':'人物名字：林一。'});
+  const m=await f.ws.pickups.media.ingest(Readable.from(Buffer.from('0000ftypisom000000000000000000')),f.user.id,'private','原片.mp4');
+  await f.update({id:'EP001-001',episode:1,scriptPath:'剧本.md',storyboardPath:'分镜.md',assets:[{path:'人物.md',role:'character'}],outputs:[{mediaId:m.id}]});const old=f.ws.links.read(f.user),shot=old.shots[0];assert(shot.entityId&&shot.versionId);
+  const plan={id:id(),owner:f.user.id,shots:[{source:{...shot},prompt:'保留旧的提交提示词'}]},job={id:id(),owner:f.user.id,planId:plan.id,sourceId:shot.id,mediaId:m.id,state:'ready',createAttempts:1};f.ws.store.put('pickup',plan);f.ws.store.put('video-job',job);
+  const fileBefore=(await f.ws.content.catalogue(f.user)).items.find(v=>v.path==='人物.md')!;
+  await f.update({id:'EP001-000',episode:1,name:'新增插镜'});const afterInsert=f.ws.links.read(f.user).shots.find((v:Doc)=>v.id===shot.id);assert.equal(afterInsert.entityId,shot.entityId);assert.equal(afterInsert.versionId,shot.versionId);
+  await f.update({id:'EP002-009',entityId:shot.entityId,versionId:shot.versionId,episode:2},shot.id);const current=f.ws.links.read(f.user,{shot_id:shot.entityId}).shots[0];assert.equal(current.id,'EP002-009');assert.equal(current.entityId,shot.entityId);assert.notEqual(current.versionId,shot.versionId);
+  const file=(await f.ws.content.catalogue(f.user)).items.find(v=>v.path==='人物.md')!;assert.equal(file.entityId,fileBefore.entityId);assert.equal(file.sha256,fileBefore.sha256);assert.deepEqual(file.episodes,['EP002']);assert.equal(file.relationships[0].entityId,shot.entityId);assert.equal(file.relationships[0].versionId,current.versionId);
+  const frozen=f.ws.links.read(f.user,{revision:old.revision}).shots[0];assert.equal(frozen.id,shot.id);assert.equal(frozen.entityId,shot.entityId);assert.equal(frozen.versionId,shot.versionId);assert.deepEqual(f.ws.store.get('pickup',plan.id),plan);assert.deepEqual(f.ws.store.get('video-job',job.id),job);
+  const generated=(await f.ws.content.page(f.user,{section:'videos'})).items.find(v=>v.mediaId===m.id)!;assert.equal(generated.sourceId,shot.id);assert.equal(generated.sourceEntityId,shot.entityId);assert.deepEqual(generated.sourceIds,['EP002-009']);
+  await f.update({id:shot.id,episode:1,assets:[{path:'人物.md',role:'character'}]});const reused=f.ws.links.read(f.user,{shot_id:shot.id}).shots[0];assert.notEqual(reused.entityId,shot.entityId);assert.deepEqual(new Set((await f.ws.content.catalogue(f.user)).items.find(v=>v.path==='人物.md')!.episodes),new Set(['EP001','EP002']));assert.equal(f.app.options.videoConcurrency,500);
+  const peer=f.app.newUser({username:'peer',password:'Synthetic-shot-identity-20261021!'},'member');f.ws.store.put('change',{id:'adoption',state:'committed'});f.ws.store.put('video-job',{...job,changeId:'adoption'});const shared=(await f.ws.content.catalogue(peer)).items.find(v=>v.mediaId===m.id)!;assert(shared.sharedProjection);assert(!Object.hasOwn(shared,'sourceEntityId'));assert(!Object.hasOwn(shared,'sourceVersionId'));assert(!Object.hasOwn(shared,'prompt'));assert.equal((await f.ws.content.catalogue(f.user)).items.find(v=>v.mediaId===m.id)!.sourceEntityId,shot.entityId);
+ }finally{await f.close();}
+});
+test('legacy shot identities are read-only projections until an authorized edit and duplicate identities never guess relationships',async()=>{
+ const f=await fixture();try{
+  const text=JSON.stringify({version:1,shots:[{id:'EP001-003',episode:1,name:'旧镜头'}]});f.publish({'资料/补抽索引.json':text});const before=f.ws.projects.current().revision,read=f.ws.links.read(f.user),old=read.shots[0];assert.equal(old.entityId,'shot:'+hash(JSON.stringify(['shared',old.id])));assert(old.versionId);assert.equal(f.ws.projects.read(read.indexPath).toString(),text);assert.equal(f.ws.projects.current().revision,before);
+  await f.update({id:'EP001-004',entityId:old.entityId,versionId:old.versionId},old.id);const renamed=f.ws.links.read(f.user).shots[0];assert.equal(renamed.entityId,old.entityId);assert.equal(renamed.id,'EP001-004');assert(!Object.hasOwn(JSON.parse(f.ws.projects.read(read.indexPath).toString()).shots[0],'versionId'),'derived version is not recursively stored inside itself');
+  f.publish({'人物.md':'林一。',[read.indexPath]:JSON.stringify({shots:[{id:'EP001-A',entityId:'same-entity',episode:1,assets:[{path:'人物.md'}]},{id:'EP002-B',entityId:'same-entity',episode:2,assets:[{path:'人物.md'}]}]})});const frozen=f.ws.projects.current().revision,view=await f.ws.content.catalogue(f.user);assert(view.warnings.some((v:string)=>v.includes('稳定编号')));assert.deepEqual(view.items.find(v=>v.path==='人物.md')!.episodes,[]);assert(f.ws.links.read(f.user).warnings.some((v:string)=>v.includes('稳定编号')));await assert.rejects(f.update({id:'EP001-A',name:'不得接管重复实体'}),/稳定编号/);assert.equal(f.ws.projects.current().revision,frozen);
+ }finally{await f.close();}
+});
+test('explicit identity protects renames, rejects collisions and replays one original change after later edits',async()=>{
+ const f=await fixture();try{
+  await f.update({id:'EP001-A',episode:1});await f.update({id:'EP001-B',episode:1});const a=f.ws.links.read(f.user,{shot_id:'EP001-A'}).shots[0];
+  await assert.rejects(f.update({id:'EP001-C'},a.id),/稳定编号|镜头编号/);await assert.rejects(f.update({id:'EP001-B',entityId:a.entityId},a.id),/已有|占用|重复/);await assert.rejects(f.update({id:'EP001-C',entityId:'another-identity'},a.id),/稳定编号/);
+  const args={operation:'upsert',expected_index_sha256:f.ws.links.read(f.user).indexSHA256,shot_id:a.id,shot:{id:'EP001-C',entityId:a.entityId,versionId:a.versionId}},request=id(),first=await f.ws.links.update(f.user,args,request);assert.equal(first.shotEntityId,a.entityId);assert.equal(first.previousShotId,a.id);await f.update({id:'EP001-C',name:'稍后改名'});const count=f.ws.store.all('change').length,replay=await f.ws.links.update(f.user,args,request);assert.deepEqual(replay,first);assert.equal(f.ws.store.all('change').length,count);assert.equal(f.ws.links.read(f.user,{shot_id:a.entityId}).shots[0].name,'稍后改名');assert.equal(f.app.store.all('model-call').length+f.app.store.all('image-job').length,0);
+ }finally{await f.close();}
+});
+test('byte-identical repeated index definitions project once without inventing a conflicting shot or changing either original',async()=>{
+ const f=await fixture();try{
+  const raw=JSON.stringify({shots:[{id:'EP003-001',entityId:'one-original-shot',episode:3,assets:[{path:'人物.md',role:'character'}]}]});f.publish({'人物.md':'人物名字：林一。','资料/补抽索引.json':raw,'旧副本/补抽索引.json':raw});
+  const before=f.ws.projects.current().revision,view=await f.ws.content.catalogue(f.user),asset=view.items.find(v=>v.path==='人物.md')!;assert.deepEqual(asset.episodes,['EP003']);assert.equal(asset.relationships.length,1);assert.equal(asset.relationships[0].entityId,'one-original-shot');assert(!view.warnings.some((v:string)=>v.includes('稳定编号重复')));assert.equal(f.ws.projects.current().revision,before);assert.equal(f.ws.projects.read('资料/补抽索引.json').toString(),raw);assert.equal(f.ws.projects.read('旧副本/补抽索引.json').toString(),raw);
+  const index=f.ws.store.get('project-content-index','shared')!;f.ws.store.put('project-content-index',{...index,schemaVersion:14});const damaged={...asset,episodes:[],relationships:[]};f.ws.store.db.prepare('UPDATE project_content_entities SET metadata=? WHERE project=? AND id=?').run(JSON.stringify(damaged),'shared',asset.id);const recovered=(await f.ws.content.catalogue(f.user)).items.find(v=>v.path==='人物.md')!;assert.deepEqual(recovered.episodes,['EP003']);assert.equal(recovered.relationships.length,1);assert.equal(recovered.entityId,asset.entityId);assert.equal(f.ws.store.get('project-content-index','shared')!.schemaVersion,17);assert.equal(f.ws.projects.current().revision,before);
+ }finally{await f.close();}
+});
+test('legacy source fields and incomplete rows remain intact while read projections provide current shot versions',async()=>{
+ const f=await fixture();try{
+  const original={id:'EP001-legacy',episode:1,versionId:17,externalNotes:{keep:'旧扩展字段'}};f.publish({'资料/补抽索引.json':JSON.stringify({shots:[original]})});const read=f.ws.links.read(f.user),shot=read.shots[0];assert.equal(typeof shot.versionId,'string');
+  await f.update({id:shot.id,name:'只改显示名',versionId:shot.versionId});const raw=JSON.parse(f.ws.projects.read(read.indexPath).toString()).shots[0];assert.equal(raw.versionId,17);assert.deepEqual(raw.externalNotes,original.externalNotes);
+  const incomplete=JSON.stringify({shots:[null,raw]});f.publish({[read.indexPath]:incomplete});const before=f.ws.projects.current().revision,projected=f.ws.links.read(f.user);assert.equal(projected.shots[0],null);assert(projected.warnings.some((v:string)=>v.includes('不完整')));assert.equal(projected.shots[1].entityId,shot.entityId);assert.equal(f.ws.projects.read(read.indexPath).toString(),incomplete);assert.equal(f.ws.projects.current().revision,before);
+ }finally{await f.close();}
+});
